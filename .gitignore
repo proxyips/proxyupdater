@@ -71,3 +71,5 @@ fabric.properties
 
 lib/src/proxy/data
 scripts/data
+
+.idea
