@@ -1,0 +1,121 @@
+{
+    "logging": {
+        "level": "debug",
+        "output": "/opt/gobetween/log.json",
+        "format": "json"
+    },
+    "api": {
+        "enabled": true,
+        "bind": "192.53.121.65:8080",
+        "basic_auth": {
+            "login": "9m3quhdw7aozps4Ekiyetbxncrvjg",
+            "password": "L4e7LTBKvr7vnXTnJjBJ"
+        },
+        "tls": null,
+        "cors": false
+    },
+    "metrics": {
+        "enabled": true,
+        "bind": "127.0.0.1:8010"
+    },
+    "defaults": {
+        "max_connections": null,
+        "client_idle_timeout": null,
+        "backend_idle_timeout": null,
+        "backend_connection_timeout": null
+    },
+    "acme": null,
+    "profiler": null,
+    "servers": {
+        "public_proxies": {
+            "max_connections": 150,
+            "client_idle_timeout": "130s",
+            "backend_idle_timeout": "0",
+            "backend_connection_timeout": "0",
+            "bind": "192.53.121.65:8091",
+            "protocol": "tcp",
+            "balance": "iphash1",
+            "sni": null,
+            "tls": null,
+            "backends_tls": null,
+            "udp": null,
+            "access": {
+                "default": "deny",
+                "rules": [
+                    "allow 24.34.73.8"
+                ]
+            },
+            "proxy_protocol": null,
+            "discovery": {
+                "kind": "static",
+                "failpolicy": "keeplast",
+                "interval": "0",
+                "timeout": "0",
+                "static_list": [
+                    "157.230.103.189:41362",
+                    "157.230.103.189:40557",
+                    "157.230.103.189:46581",
+                    "104.129.192.155:10605",
+                    "157.230.103.189:44705",
+                    "157.230.103.189:43395",
+                    "70.44.24.245:8888",
+                    "72.196.184.54:3128",
+                    "157.230.103.189:43794",
+                    "157.230.103.189:33123",
+                    "157.230.103.189:36099",
+                    "157.230.103.189:41524",
+                    "157.230.103.189:44694",
+                    "157.230.103.189:40710",
+                    "157.230.103.189:33549",
+                    "157.230.103.189:39394",
+                    "157.230.103.189:34304"
+                ]
+            },
+            "healthcheck": {
+                "kind": "ping",
+                "interval": "30m",
+                "passes": 2,
+                "fails": 1,
+                "timeout": "1s",
+                "initial_status": "healthy"
+            }
+        },
+        "tor_proxies": {
+            "max_connections": 150,
+            "client_idle_timeout": "130s",
+            "backend_idle_timeout": "0",
+            "backend_connection_timeout": "0",
+            "bind": "192.53.121.65:8090",
+            "protocol": "tcp",
+            "balance": "roundrobin",
+            "sni": null,
+            "tls": null,
+            "backends_tls": null,
+            "udp": null,
+            "access": {
+                "default": "deny",
+                "rules": [
+                    "allow 24.34.73.8"
+                ]
+            },
+            "proxy_protocol": null,
+            "discovery": {
+                "kind": "static",
+                "failpolicy": "keeplast",
+                "interval": "0",
+                "timeout": "0",
+                "static_list": [
+                    "127.0.0.1:9051"
+                ]
+            },
+            "healthcheck": {
+                "kind": "ping",
+                "interval": "15m",
+                "passes": 2,
+                "fails": 1,
+                "timeout": "1s",
+                "initial_status": "healthy"
+            }
+        }
+    }
+}
