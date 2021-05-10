@@ -22,8 +22,6 @@ import (
 
 )
 
-var cfgFile string
-
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "proxyupdater",
@@ -32,7 +30,8 @@ var rootCmd = &cobra.Command{
 We are using several paid proxy scraper programs worth hundreds of dollars and running them on a server 24/7. 
 These are good for testing.
 
-For high-quality Mobile, Residential, and Datacenter proxies check out https://proxyips.net and use discount code: build. `,
+For high-quality Mobile, Residential, and Datacenter proxies check out:
+https://proxyips.net and use discount code: build`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
