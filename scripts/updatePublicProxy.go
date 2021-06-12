@@ -59,8 +59,8 @@ func UpdateGobetween(filename string, country string)  ( err error) {
 	return
 	}
 	var data rest.Gobetween
-
 	json.Unmarshal(dat, &data)
+
 	sDat, err := json.Marshal(data.Servers)
 	if err != nil {
 	return
@@ -76,7 +76,12 @@ func UpdateGobetween(filename string, country string)  ( err error) {
 	fmt.Println(mg.Uri)
 	var newProxy rest.Server
 	newProxy = servers["public_proxies"]
-	newProxy.Discovery.StaticList = proxiesDat
+	var baseDefault Base
+	json.Unmarshal([]byte(betweenbase), &baseDefault)
+	baseDefault.Bind = newProxy.Bind
+	baseDefault.Discovery = newProxy.Discovery
+	baseDefault.Access = newProxy.Access
+	baseDefault.Discovery.StaticList = proxiesDat
 	pDat, err := json.Marshal(newProxy)
 	if err != nil {
 		fmt.Println(err)
@@ -93,3 +98,71 @@ func UpdateGobetween(filename string, country string)  ( err error) {
 	return
 }
 var Countries = proxy.CountryList
+
+var betweenbase = `
+{
+    "max_connections": 50,
+    "client_idle_timeout": "130s",
+    "backend_idle_timeout": "0",
+    "backend_connection_timeout": "0",
+    "bind": "45.56.96.249:8091",
+    "protocol": "tcp",
+    "balance": "roundrobin",
+    "access": {
+        "default": "deny",
+        "rules": [
+            "allow 24.34.73.8",
+            "allow 78.138.0.108"
+        ]
+    },
+    "discovery": {
+        "kind": "static",
+        "failpolicy": "setempty",
+        "interval": "5s",
+        "timeout": "2s",
+        "static_list": []
+    },
+    "healthcheck": {
+        "kind": "exec",
+        "interval": "11m",
+        "passes": 1,
+        "fails": 1,
+        "timeout": "2s",
+        "initial_status": "healthy",
+        "exec_command": "/opt/bin/proxytester.sh",
+        "exec_expected_positive_output": "1",
+        "exec_expected_negative_output": ""
+    }
+}`
+
+type Base struct {
+	Access struct {
+		Default string   `json:"default"`
+		Rules   []string `json:"rules"`
+	} `json:"access"`
+	BackendConnectionTimeout string `json:"backend_connection_timeout"`
+	BackendIdleTimeout       string `json:"backend_idle_timeout"`
+	Balance                  string `json:"balance"`
+	Bind                     string `json:"bind"`
+	ClientIdleTimeout        string `json:"client_idle_timeout"`
+	Discovery                struct {
+		Failpolicy string        `json:"failpolicy"`
+		Interval   string        `json:"interval"`
+		Kind       string        `json:"kind"`
+		StaticList []string `json:"static_list"`
+		Timeout    string        `json:"timeout"`
+	} `json:"discovery"`
+	Healthcheck struct {
+		ExecCommand                string `json:"exec_command"`
+		ExecExpectedNegativeOutput string `json:"exec_expected_negative_output"`
+		ExecExpectedPositiveOutput string `json:"exec_expected_positive_output"`
+		Fails                      int64  `json:"fails"`
+		InitialStatus              string `json:"initial_status"`
+		Interval                   string `json:"interval"`
+		Kind                       string `json:"kind"`
+		Passes                     int64  `json:"passes"`
+		Timeout                    string `json:"timeout"`
+	} `json:"healthcheck"`
+	MaxConnections int64  `json:"max_connections"`
+	Protocol       string `json:"protocol"`
+}
