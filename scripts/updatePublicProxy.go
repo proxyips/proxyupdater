@@ -82,7 +82,7 @@ func UpdateGobetween(filename string, country string)  ( err error) {
 	baseDefault.Discovery = newProxy.Discovery
 	baseDefault.Access = newProxy.Access
 	baseDefault.Discovery.StaticList = proxiesDat
-	pDat, err := json.Marshal(newProxy)
+	pDat, err := json.Marshal(baseDefault)
 	if err != nil {
 		fmt.Println(err)
 	}
