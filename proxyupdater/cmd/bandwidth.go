@@ -17,6 +17,8 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
+	"github.com/proxyips/proxyupdater/scripts"
+	"fmt"
 )
 
 // bandwidthCmd represents the bandwidth command
@@ -26,7 +28,10 @@ var bandwidthCmd = &cobra.Command{
 	Long: `
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-
+		err := scripts.BandwidthLog(host, path)
+		if err != nil {
+			fmt.Println(err)
+		}
 	},
 }
 
