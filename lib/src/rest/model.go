@@ -94,3 +94,27 @@ type Gobetween struct {
 	Profiler interface{} `json:"profiler"`
 	Servers interface{} `json:"servers"`
 }
+type Stats struct {
+	ActiveConnections int64 `json:"active_connections"`
+	Backends          []struct {
+		Host     string `json:"host"`
+		Port     string `json:"port"`
+		Priority int64  `json:"priority"`
+		Stats    struct {
+			ActiveConnections  int64 `json:"active_connections"`
+			Discovered         bool  `json:"discovered"`
+			Live               bool  `json:"live"`
+			RefusedConnections int64 `json:"refused_connections"`
+			Rx                 int64 `json:"rx"`
+			RxSecond           int64 `json:"rx_second"`
+			TotalConnections   int64 `json:"total_connections"`
+			Tx                 int64 `json:"tx"`
+			TxSecond           int64 `json:"tx_second"`
+		} `json:"stats"`
+		Weight int64 `json:"weight"`
+	} `json:"backends"`
+	RxSecond int64 `json:"rx_second"`
+	RxTotal  int64 `json:"rx_total"`
+	TxSecond int64 `json:"tx_second"`
+	TxTotal  int64 `json:"tx_total"`
+}

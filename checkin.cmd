@@ -1,3 +1,3 @@
 git add -A
-git commit -m "fixed typo"
+git commit -m "added bandwidth log"
 git push

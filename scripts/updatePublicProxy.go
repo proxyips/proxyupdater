@@ -38,10 +38,9 @@ func updateProxyList(country string)  (proxies []string, err error) {
  return proxyList, err
 }
 
-func UpdateGobetween(filename string, country string)  ( err error) {
-	//TODO get info from gobetween.json
+func UpdateGobetween(filename, country string)  ( err error) {
 	var host string
-	apiDat, err := proxy.GetApiSettings(filename)
+	apiDat, err := proxy.GetApiFileSettings(filename)
 	domain := regexp.MustCompile(`[aA-zZ]`)
 	if domain.MatchString(apiDat.Bind){
 		host = fmt.Sprintf("https://%v/", apiDat.Bind)

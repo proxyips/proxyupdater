@@ -1,9 +1,10 @@
 package proxy
 
 import (
-	"io/ioutil"
 	"encoding/json"
 	"github.com/proxyips/proxyupdater/lib/src/rest"
+	"fmt"
+	"io/ioutil"
 )
 
 type ApiAccess struct {
@@ -14,11 +15,26 @@ type ApiAccess struct {
 	Bind    string      `json:"bind"`
 }
 
-func GetApiSettings(file string)  (api ApiAccess, err error) {
-	dat, err := ioutil.ReadFile(file)
+func GetApiSettings(host string)  (gobetween GobetweenDump, err error) {
+	var mg = rest.Manager{
+		Uri: fmt.Sprintf("%vdump?format=json", host),
+		UserName: "9m3quhdw7aozps4Ekiyetbxncrvjg",
+		Password: "L4e7LTBKvr7vnXTnJjBJ",
+	}
+	dat, err := mg.Get()
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(string(dat))
+	json.Unmarshal(dat, &gobetween)
+ return
+}
+func GetApiFileSettings(filename string)  (api ApiAccess, err error) {
+	dat, err := ioutil.ReadFile(filename)
 	var gobetween rest.Gobetween
 	json.Unmarshal(dat, &gobetween)
 	api.BasicAuth = gobetween.API.BasicAuth
 	api.Bind = gobetween.API.Bind
  return
 }
+
