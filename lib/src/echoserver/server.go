@@ -4,10 +4,8 @@ import (
 	"fmt"
 	"net"
 	"os"
-	"path/filepath"
-	"strings"
-
-	"github.com/labstack/echo/middleware"
+	"github.com/labstack/echo/v4"
+	"github.com/proxyips/proxyupdater/lib/src/proxy"
 )
 
 func check(ip string) bool {
@@ -31,27 +29,7 @@ type TLMSMSServer struct {
 
 func (t TLMSMSServer) TLMServer() {
 
-	// static files
-	//path := "/Source/golang/src/sc.tpnfc.us/oyoshi/tlmtext"
-	path, _ := os.Getwd()
-	path = filepath.Join(path, "frontend", "deploy")
-	path = strings.TrimPrefix(path, "C:")
-	path = strings.Replace(path, "\\", "/", 100)
-	path = strings.Replace(path, "lib/src/echoserver/", "", 1)
-	if os.Getenv("nmpw3xEcjogyzbfA4uqr") == "zj9shEHitCdFwvmarygo" {
-		fmt.Println(path)
-
-	}
-	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
-		Root:   path,
-		Browse: true,
-		HTML5:  true,
-		Index:  "index.html",
-	}))
-	//e.Static("/main.dart.js", path + "app/published/web/main.dart.js")
-	//e.Static("/static/", path + "app/published/web/static")
-	//e.Static("/packages/", path + "app/published/web/packages")
-
+	e.GET("/logs/", logHandler)
 	if t.IPAddress != "" {
 		x := check(t.IPAddress)
 		if x {
@@ -67,4 +45,16 @@ func (t TLMSMSServer) TLMServer() {
 		e.Start(startStr)
 	}
 
+}
+
+func logHandler(c echo.Context)  (err error) {
+	var x = proxy.BandwidthMeter{
+		Path: "/opt/gobetween/data",
+	}
+	data, err := x.Echo()
+	if err != nil {
+		return c.JSONBlob(301, []byte(`{"status": "failed"}`))
+
+	}
+return c.JSONBlob(200, data)
 }

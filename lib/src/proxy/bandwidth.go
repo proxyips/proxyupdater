@@ -65,3 +65,32 @@ func (b BandwidthMeter) Get() (err error) {
 	ioutil.WriteFile(fmt.Sprintf("%v/bandwidth.json",b.Path), datIngressPoints, 0644)
 	return
 }
+func (b BandwidthMeter) Echo() (data []byte,  err error) {
+	dat, rst, err := bandwidthDump(b.Host)
+	if err != nil {
+		fmt.Println(err)
+	}
+	var ingressPoints = IngressPoints{
+		Time: time.Now(),
+	}
+
+	for key, value := range dat.Servers {
+		var ingressStats = IngressStats{
+			Name: key,
+			Server: value,
+		}
+
+		rst.Uri = fmt.Sprintf("%vservers/%v/stats",b.Host, key )
+		d, err := rst.Get()
+		if err != nil {
+			fmt.Println(err)
+		}
+		json.Unmarshal(d, &ingressStats.Point)
+		ingressPoints.Ingress = append(ingressPoints.Ingress, ingressStats)
+
+	}
+	datIngressPoints, err := json.Marshal(ingressPoints)
+	ioutil.WriteFile(fmt.Sprintf("%v/bandwidth_%v.json",b.Path,ingressPoints.Time.Unix()), datIngressPoints, 0644)
+	ioutil.WriteFile(fmt.Sprintf("%v/bandwidth.json",b.Path), datIngressPoints, 0644)
+	return datIngressPoints, err
+}

@@ -1,7 +1,7 @@
 package echoserver
 
 import (
-	"gitlab.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 var e = echo.New()
