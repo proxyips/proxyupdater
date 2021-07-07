@@ -49,6 +49,7 @@ func (t TLMSMSServer) TLMServer() {
 
 func logHandler(c echo.Context)  (err error) {
 	var x = proxy.BandwidthMeter{
+		Host: "http://127.0.0.1:8010",
 		Path: "/opt/gobetween/data",
 	}
 	data, err := x.Echo()

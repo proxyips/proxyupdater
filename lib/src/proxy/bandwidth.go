@@ -83,6 +83,7 @@ func (b BandwidthMeter) Echo() (data []byte,  err error) {
 		}
 
 		rst.Uri = fmt.Sprintf("%v/servers/%v/stats",host, key )
+		fmt.Println(*rst)
 		d, err := rst.Get()
 		if err != nil {
 			fmt.Println(err)

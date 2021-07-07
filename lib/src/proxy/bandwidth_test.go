@@ -32,7 +32,7 @@ func TestBandwidthMeter(t *testing.T) {
 }
 func TestBandwidthMeterEcho(t *testing.T) {
 	var x = BandwidthMeter{
-		Host: "https://prx.gcx.pw",
+		Host: "https://wrath.proxyips.cloud",
 		Path:"data",
 	}
 	dat, err := x.Echo()
