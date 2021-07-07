@@ -20,7 +20,7 @@ func TestBandwidthDump(t *testing.T) {
 }
 func TestBandwidthMeter(t *testing.T) {
 	var x = BandwidthMeter{
-		Host: "https://prx.gcx.pw/",
+		Host: "https://prx.gcx.pw",
 		Path:"data",
 	}
 	err := x.Get()
@@ -29,4 +29,17 @@ func TestBandwidthMeter(t *testing.T) {
 		fmt.Println(err)
 		t.Fail()
 	}
+}
+func TestBandwidthMeterEcho(t *testing.T) {
+	var x = BandwidthMeter{
+		Host: "https://prx.gcx.pw",
+		Path:"data",
+	}
+	dat, err := x.Echo()
+	if err != nil {
+		t.Name()
+		fmt.Println(err)
+		t.Fail()
+	}
+	fmt.Println(string(dat))
 }

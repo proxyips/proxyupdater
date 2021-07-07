@@ -6,18 +6,19 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"time"
+	"strings"
 )
 
 func bandwidthDump(hostname string)  (gobetween GobetweenDump, mg *rest.Manager, err error) {
 	var username, password string
 	if hostname == ""{
-		hostname = "http://127.0.0.1:8010/"
+		hostname = "http://127.0.0.1:8010"
 	} else {
 		username = "9m3quhdw7aozps4Ekiyetbxncrvjg"
 		password = "L4e7LTBKvr7vnXTnJjBJ"
 	}
 	mg = &rest.Manager{
-		Uri: fmt.Sprintf("%vdump?format=json", hostname),
+		Uri: fmt.Sprintf("%v/dump?format=json", hostname),
 		UserName: username,
 		Password: password,
 	}
@@ -26,7 +27,7 @@ func bandwidthDump(hostname string)  (gobetween GobetweenDump, mg *rest.Manager,
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(string(dat))
+	//fmt.Println(string(dat))
 	json.Unmarshal(dat, &gobetween)
  return
 }
@@ -66,7 +67,8 @@ func (b BandwidthMeter) Get() (err error) {
 	return
 }
 func (b BandwidthMeter) Echo() (data []byte,  err error) {
-	dat, rst, err := bandwidthDump(b.Host)
+	host := strings.TrimRight(b.Host,"/")
+	dat, rst, err := bandwidthDump(host)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -80,12 +82,14 @@ func (b BandwidthMeter) Echo() (data []byte,  err error) {
 			Server: value,
 		}
 
-		rst.Uri = fmt.Sprintf("%vservers/%v/stats",b.Host, key )
+		rst.Uri = fmt.Sprintf("%v/servers/%v/stats",host, key )
 		d, err := rst.Get()
 		if err != nil {
 			fmt.Println(err)
 		}
-		json.Unmarshal(d, &ingressStats.Point)
+		var point IngressPoint
+		json.Unmarshal(d, &point)
+		ingressStats.Point = point
 		ingressPoints.Ingress = append(ingressPoints.Ingress, ingressStats)
 
 	}
