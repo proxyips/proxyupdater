@@ -3,8 +3,10 @@ package proxy
 import (
 	"time"
 	"github.com/go-resty/resty/v2"
+	"encoding/json"
+	"fmt"
 )
-const UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
+const UserAgent = "proxyUpdater/service 2020-08"
 func GetProxyUpdate()  (rsp []byte, err error) {
 	client := resty.New()
 	client.SetHeaders(map[string]string{
@@ -18,4 +20,25 @@ func GetProxyUpdate()  (rsp []byte, err error) {
 		Get(Uri)
 
 	return resp.Body(), nil
+}
+//PublicProxyJson JSON discovery is useful for custom setups when you have your own service registry implementation that can provide backends list in JSON format. gobetween will make HTTP query
+func PublicProxyJson()  (proxies DiscoverProxies) {
+	dat, err := GetProxyUpdate()
+	if err != nil {
+		return
+	}
+	var rawProxyList PublicProxies
+	json.Unmarshal(dat, &rawProxyList)
+	for _, v := range rawProxyList {
+		if v.Alive == 1{
+			if v.Reliability > 55 {
+				var pprx  = DiscoverProxy{
+					Host: v.IP,
+					Port: fmt.Sprintf("%v",v.Port),
+				}
+				proxies = append(proxies, pprx)
+			}
+		}
+	}
+	return
 }

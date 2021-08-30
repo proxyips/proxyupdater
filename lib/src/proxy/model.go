@@ -122,3 +122,8 @@ type IngressPoints struct {
 	Time time.Time `json:"time"`
 	Ingress []IngressStats `json:"ingress"`
 }
+type DiscoverProxies []DiscoverProxy
+type DiscoverProxy struct {
+	Host string `json:"host"`
+	Port string `json:"port"`
+}

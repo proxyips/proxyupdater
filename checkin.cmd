@@ -1,3 +1,3 @@
 git add -A
-git commit -m "changed path for host to remove neede /"
+git commit -m "added public proxy json format"
 git push

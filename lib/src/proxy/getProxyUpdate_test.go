@@ -4,6 +4,7 @@ import (
 	"testing"
 	"fmt"
 	"encoding/json"
+	"github.com/Jeffail/gabs/v2"
 )
 
 
@@ -18,4 +19,8 @@ func TestGetProxyUpdate(t *testing.T) {
 	var rawProxyList PublicProxies
 	json.Unmarshal(dat, &rawProxyList)
 	fmt.Println(rawProxyList)
+}
+func TestPublicProxyJson(t *testing.T) {
+	dat := PublicProxyJson()
+	fmt.Println(gabs.Wrap(dat).String())
 }
