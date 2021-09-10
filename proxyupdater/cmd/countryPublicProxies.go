@@ -18,30 +18,26 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 	"github.com/proxyips/proxyupdater/scripts"
+	"fmt"
 )
 
-// publicproxyjsonCmd represents the publicproxyjson command
-var publicproxyjsonCmd = &cobra.Command{
-	Use:   "public-proxy-json",
-	Short: "Public Proxies Json format",
+// countryPublicProxiesCmd represents the countryPublicProxies command
+var countryPublicProxiesCmd = &cobra.Command{
+	Use:   "country-public-proxies",
+	Short: "Country Public Proxies Json format",
 	Long: `Public proxies are scraped and updated every 10 min.  We are using several paid proxy scraper programs worth hundreds of dollars and running them on a server 24/7. These are good for testing.
-
-For high-quality Mobile, Residential, and Datacenter proxies check out https://proxyips.net and use discount code: build..`,
+For posting on BHW
+`,
 	Run: func(cmd *cobra.Command, args []string) {
-		scripts.PublicProxies()
+		if country != ""{
+			scripts.PublicCountryProxies(country)
+		} else {
+			fmt.Println("must provide two letter country code")
+		}
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(publicproxyjsonCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// publicproxyjsonCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// publicproxyjsonCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.AddCommand(countryPublicProxiesCmd)
+	countryPublicProxiesCmd.Flags().StringVarP(&country, "country", "c", "", "two letter country code for proxies")
 }

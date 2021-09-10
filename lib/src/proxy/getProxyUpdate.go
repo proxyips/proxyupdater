@@ -5,6 +5,7 @@ import (
 	"github.com/go-resty/resty/v2"
 	"encoding/json"
 	"fmt"
+	"strings"
 )
 const UserAgent = "proxyUpdater/service 2020-08"
 func GetProxyUpdate()  (rsp []byte, err error) {
@@ -37,6 +38,22 @@ func PublicProxyJson()  (proxies DiscoverProxies) {
 					Port: fmt.Sprintf("%v",v.Port),
 				}
 				proxies = append(proxies, pprx)
+			}
+		}
+	}
+	return
+}
+func PublicProxyUsJson(country string)  (proxies []PublicProxy) {
+	dat, err := GetProxyUpdate()
+	if err != nil {
+		return
+	}
+	var rawProxyList PublicProxies
+	json.Unmarshal(dat, &rawProxyList)
+	for _, v := range rawProxyList {
+		if v.Alive == 1{
+			if v.Reliability > 55 && v.Country == strings.ToUpper(country) {
+				proxies = append(proxies, v)
 			}
 		}
 	}

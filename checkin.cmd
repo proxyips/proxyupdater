@@ -1,3 +1,3 @@
 git add -A
-git commit -m "added public proxy json format"
+git commit -m "added country-public-proxies"
 git push

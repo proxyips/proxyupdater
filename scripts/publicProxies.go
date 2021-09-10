@@ -11,3 +11,8 @@ func PublicProxies()  {
 	fmt.Println(gabs.Wrap(dat).String())
  return
 }
+func PublicCountryProxies(country string)  {
+	dat := proxy.PublicProxyUsJson(country)
+	fmt.Println(gabs.Wrap(dat).StringIndent("", "    "))
+ return
+}

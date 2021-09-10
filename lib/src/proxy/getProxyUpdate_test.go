@@ -24,3 +24,7 @@ func TestPublicProxyJson(t *testing.T) {
 	dat := PublicProxyJson()
 	fmt.Println(gabs.Wrap(dat).String())
 }
+func TestPublicProxyUsJson(t *testing.T) {
+	dat := PublicProxyUsJson("us")
+	fmt.Println(gabs.Wrap(dat).String())
+}

@@ -6,7 +6,7 @@ import (
 )
 
 func TestGetApiSettings(t *testing.T) {
-	dat, err := GetApiSettings("http://prx.gcx.pw/")
+	dat, err := GetApiSettings("https://Ga4k-jvbn-qZmW.proxyips.cloud/")
 	if err != nil {
 		t.Name()
 		fmt.Println(err)

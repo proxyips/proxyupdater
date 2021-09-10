@@ -73,3 +73,4 @@ lib/src/proxy/data
 scripts/data
 
 .idea
+/bin/
